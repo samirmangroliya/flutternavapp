@@ -2,6 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutternavapp/IntroScreen.dart';
+import 'package:flutternavapp/sharedpreference/SharedPrefDataSaveExample.dart';
+import 'package:flutternavapp/sharedpreference/SuccessFullyLogin.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'constants/Constants.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -13,12 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    Timer(Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => IntroScreen()),
-      );
-    });
+    timeDelay();
   }
 
   @override
@@ -46,5 +45,36 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       ),
     );
+  }
+
+  void timeDelay() {
+    Timer(Duration(seconds: 2), () {
+      goToNextScreen();
+    });
+  }
+
+  void goToNextScreen() async {
+    var prefs = await SharedPreferences.getInstance();
+    var name = prefs.getString(Constants.KEYNAME);
+
+    if (name != null && name.toString().isNotEmpty) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: ((context) {
+            return SuccessFullyLogin(nameFromIntro: name.toString());
+          }),
+        ),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: ((context) {
+            return SharedPrefDataSaveExample();
+          }),
+        ),
+      );
+    }
   }
 }

@@ -1,6 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutternavapp/constants/Constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'SuccessFullyLogin.dart';
 
 class SharedPrefDataSaveExample extends StatefulWidget {
   @override
@@ -10,14 +11,12 @@ class SharedPrefDataSaveExample extends StatefulWidget {
 
 class _SharedPrefDataSaveExampleState extends State<SharedPrefDataSaveExample> {
   var nameController = TextEditingController();
-  static const String KEYNAME = "name";
-  var nameValue = "";
+
 
   @override
   void initState() {
     super.initState();
 
-    getValue();
   }
 
   @override
@@ -32,7 +31,7 @@ class _SharedPrefDataSaveExampleState extends State<SharedPrefDataSaveExample> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Please Enter Your Name to ",
+                "Please Enter Your Name",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 30),
@@ -48,12 +47,11 @@ class _SharedPrefDataSaveExampleState extends State<SharedPrefDataSaveExample> {
                 onPressed: () async {
                   var name = nameController.text.toString();
                   var prefs = await SharedPreferences.getInstance();
-                  prefs.setString(KEYNAME, name);
+                  prefs.setString(Constants.KEYNAME, name);
+                  goToLoggedInScreen();
                 },
-                child: Text("Save"),
-              ),
-              SizedBox(height: 30),
-              Text("Saved Value::\n$nameValue"),
+                child: Text("Login"),
+              )
             ],
           ),
         ),
@@ -61,12 +59,18 @@ class _SharedPrefDataSaveExampleState extends State<SharedPrefDataSaveExample> {
     );
   }
 
-  void getValue() async {
-      var prefs = await SharedPreferences.getInstance();
-      var name = prefs.getString(KEYNAME);
-      nameValue = name != null ? name : "No Value Saved";
-      setState(() {
+  void goToLoggedInScreen() async {
+    var prefs = await SharedPreferences.getInstance();
+    var name = prefs.getString(Constants.KEYNAME);
 
-      });
+    if (name != null && name.toString().isNotEmpty) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: ((context) =>
+              SuccessFullyLogin(nameFromIntro: name.toString())),
+        ),
+      );
+    }
   }
 }

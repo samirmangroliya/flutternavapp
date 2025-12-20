@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutternavapp/SplashScreen.dart';
 import 'package:flutternavapp/sharedpreference/SharedPrefDataSaveExample.dart';
 
 void main() {
@@ -42,10 +43,10 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: SharedPrefDataSaveExample(),
+      home: SplashScreen(),
     );
   }
-}/*
+} /*
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -131,4 +132,3 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }*/
-
